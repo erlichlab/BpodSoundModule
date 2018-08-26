@@ -1,5 +1,5 @@
 # About the Bpod Sound Module
-The sound module contains a Respberry Pi, and Rpi Sound Card(eg. Our soundcard PCB, or PiFi soundcard). To provide low-latency sound service to the bpod.
+The sound module contains a Respberry Pi, and Rpi Sound Card(eg. Our soundcard PCB). To provide low-latency sound service to the bpod.
 
 It connect to the Bpod hardware (the ardunio) via serial interface, and connect to the Bpod System (MATLAB) via ZMQ Socket.
 
@@ -162,8 +162,12 @@ For the serial 1 or serial 2 port in the bpod shield board. normally, you need t
 
 If you want to have a sound timing pluse feed back to the bpod, you can connect two BNC output ports to the bpod two BNC input ports.
 
+## Config the computer
+Some of code in this function is calling something in [Erlich Lab Matlab Utilities](https://github.com/erlichlab/elutils). For example, [the ini file reading stuff](https://github.com/erlichlab/elutils/blob/master/%2Butils/ini2struct.m), and the [inputordefault functions](https://github.com/erlichlab/elutils/blob/master/%2Butils/inputordefault.m). These functions are not included in this module, if you cannot edit & replace these, you will need to add [Erlich Lab Matlab Utilities](https://github.com/erlichlab/elutils) into you MATLAB search path.
 
-## Auto Config
+After that, you can add this Module' folder (mainly three .m MATLAB file and a jar file) into your MATLAB searchpath, then it will work.
+
+## Auto Config the Rpi
 If you are using our soundcard PCB. We have a simple bash script which can configuring the Rpi automatically.
 
 ### Step 1. Git clone and download
