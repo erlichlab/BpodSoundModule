@@ -26,6 +26,7 @@ class SoundServiceSimple(object):
         sd.default.device=2
         sd.default.latency=['low','low']
         self.num_files = len(List_Sound)
+        self.List_Sound_Num = list()
         i=0
         for list_item in List_Sound:
             self.List_Sound_Num.append(list_item*volumelist[i])
@@ -127,7 +128,7 @@ class SoundServiceComp(object):
         global isPlay,cb
         isPlay = np.zeros(self.num_files,dtype = 'int32')
         i=0
-        List_Sound_Num = list()
+        self.List_Sound_Num = list()
         for list_item in List_Sound:
             self.List_Sound_Num.append(list_item*volumelist[i]) #set the volume
             i+=1

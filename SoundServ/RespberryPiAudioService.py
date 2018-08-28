@@ -243,6 +243,7 @@ class PiAudioServer(object):
         print("we are going to clear all sounds")
         if send:
             self.socket.send(b"CLEAR")
+        self.Name_list = list()
         self.WAV_list = list()
         self.Volume_list = list()
         self.Loop_list = list()
