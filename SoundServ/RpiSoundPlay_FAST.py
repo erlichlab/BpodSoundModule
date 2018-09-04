@@ -35,7 +35,7 @@ class SoundServiceSimple(object):
         self.Stim.start()
 
     def serialstart(self):
-        self.ser=serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=1.0)
+        self.ser=serial.Serial("/dev/serial0", baudrate=115200, timeout=1.0)
 
     def StartSnd(self,event):
         while event.isSet()==0:
@@ -140,7 +140,7 @@ class SoundServiceComp(object):
         cb.data=self.List_Sound_Num
 
     def serialstart(self):
-        self.ser=serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=1.0)
+        self.ser=serial.Serial("/dev/serial0", baudrate=115200, timeout=1.0)
 
     def SerialDect(self,event):
         global isPlay
@@ -161,7 +161,7 @@ class SoundServiceComp(object):
 
     def StartSnd(self,serial_event):
         # open audio thread
-        self.sd1 = sd.OutputStream(dtype='float32',callback=callback)
+        self.sd1 = sd.OutputStream(dtype='float32',callback=callback,blocksize=256)
         self.sd1.start()
         # open serial thread
         self.tser=threading.Thread(target=self.SerialDect,args=(serial_event,),name='serialdetect')

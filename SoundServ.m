@@ -42,6 +42,9 @@ classdef (Abstract) SoundServ < dynamicprops
         function id = GetSoundid(soundname,playORstop)
             id = nan;
         end
+        function ok = setLatency(obj,latency)
+            ok = true;
+        end
         
         function isSuss = sync(obj)
             % sync the sound between local and server
@@ -67,7 +70,7 @@ classdef (Abstract) SoundServ < dynamicprops
         function SF = getSF(obj,val)
             % set or get SF
             global BpodSystem
-            if strcmp(BpodSystem.SoundModule,'PiSound')
+            if strcmp(BpodSystem.PluginObjects.SoundServerInfo,'PiSound')
                 SF = val;
                 obj.SF = val;
             else
@@ -80,7 +83,7 @@ classdef (Abstract) SoundServ < dynamicprops
     methods (Static = true)
         function str = trigger()
             global BpodSystem
-            if strcmp(BpodSystem.PluginObjects.SoundServer,'Rpi')
+            if strcmp(BpodSystem.PluginObjects.SoundServerInfo,'Rpi')
                 str = 'Serial1Code';
             else
                 str = 'PlaySound';

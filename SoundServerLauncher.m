@@ -10,7 +10,7 @@ function [ obj ] = SoundServerLauncher( )
 %   By Jingjie Li (jingjie.li@nyu.edu)
 global BpodSystem
 
-if strcmp(BpodSystem.PluginObjects.SoundServer,'Rpi')
+if strcmp(BpodSystem.PluginObjects.SoundServerInfo,'Rpi')
     obj = PiSoundServer();
 else
     obj = PsychSoundServer();
