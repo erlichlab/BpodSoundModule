@@ -5,11 +5,15 @@ It connect to the Bpod hardware (the ardunio) via serial interface, and connect 
 
 ![SoundModule](https://i.imgur.com/DNiOJHS.png)
 
-<center>__Fig 1.__ Architecture of the sound module</center>
+__Fig 1.__ Architecture of the sound module
 
 At the beginning of each training session, the MATLAB will sent a list of sound wave and settings to configure the sound service. At the beginning of each trial before running the State Meachine. The sound service will be turned on, then the Rpi will start listening on the serial port, the bpod can send 8-bits through info to turn on/off different sounds. After each trial, the sound service will be turned off.
 
 Generally, the latency of the sound is about __7.5ms__. With a low-latency configuration, we can get up to __1.3ms__ latency.
+
+![superlowlatency](https://i.imgur.com/jyB8RiT.png)
+
+__Fig 2.__ Super Low Latency Measured by an oscilloscope
 
 By [__Jingjie Li__](mailto:jingjie.li@nyu.edu) from [Erlich Lab](www.erlichlab.org). V1.0 software finished on 8th Feb, 2018. V2.0 PCB finished on 1st Aug.
 
@@ -102,7 +106,7 @@ You need to send 8 bits through serial port in Bpod Arduino To trigger the sound
 
 ![Imgur](https://i.imgur.com/NxBvZoj.png)
 
-<center>__Fig 2.__ 8 bits triger info</center>
+__Fig 3.__ 8 bits triger info
 
 You can specify sound name with obj.Sounds.trigger() to play specific sound in OutputActions while assembling state meachine, example shown below:
 
@@ -150,7 +154,7 @@ We highly recommand our PCB solution. Our PCB is using TI's PCM5122 Hifi DAC Chi
 
 ![Soundcard PCB](https://i.imgur.com/GuCVbyW.png)
 
-<center>__Fig 3.__ Bpod Soundcard PCB</center>
+__Fig 4.__ Bpod Soundcard PCB
 
 Like other common used rpi based hardwares, you can directly plug the the card on the top of the RPi, it will pick up 5V and I2S sound signals from Rpi's GPIO pins.
 
@@ -333,7 +337,7 @@ If there are no serial recieveing display and you're pretty sure that the bpod h
 Normally, it print like that:
 ![NormalPrintout](https://i.imgur.com/JHSXIIP.png)
 
-<center>__Fig 4.__ Normal Print Out</center>
+__Fig 5.__ Normal Print Out
 
 If still no serial signal recieving, you may need to look into the python file named `RpiSoundPlay_FAST.py`, replace all `/dev/ttyAMA0` with `/dev/serial0`.
 
