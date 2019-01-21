@@ -68,7 +68,7 @@ classdef (Abstract) SoundServ < dynamicprops
             % leave this empty
         end
         function SF = getSF(obj,val)
-            % set or get SF
+            % get SF
             global BpodSystem
             if strcmp(BpodSystem.PluginObjects.SoundServerInfo,'PiSound')
                 SF = val;
@@ -78,15 +78,24 @@ classdef (Abstract) SoundServ < dynamicprops
                 SF = PsychToolboxSoundServer('getSF');
             end
         end
+        function SF = setSF(obj,val)
+        end
     end
     
     methods (Static = true)
-        function str = trigger()
+        function str = trigger(PlayorStop)
+            if nargin == 0
+                PlayorStop=[];
+            end
             global BpodSystem
             if strcmp(BpodSystem.PluginObjects.SoundServerInfo,'Rpi')
                 str = 'Serial1Code';
             else
-                str = 'PlaySound';
+                if strcmp(PlayorStop,'stop') || strcmp(PlayorStop,'Stop')
+                    str = 'StopSound';
+                else
+                    str = 'PlaySound';
+                end
             end
             
         end

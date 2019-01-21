@@ -183,7 +183,7 @@ classdef PiSoundServer < SoundServ
                         balvec = repmat([0.5+0.5*strtemp.bal;0.5-0.5*strtemp.bal],1,size(strtemp.wave,2));
                         strtemp.wave = repmat(strtemp.wave.*balvec,1,strtemp.rep);
                         obj.socket.send(jsonencode(strtemp));
-                        OK = waitForSTR(obj, 'str','NEXT');
+                        OK = waitForSTR(obj, 'str','NEXT','timeout',30);
                         if ~OK
                             isSuss = 0;
                             return
@@ -202,7 +202,7 @@ classdef PiSoundServer < SoundServ
         end
         
         function id = GetSoundid(obj,soundname,playORstop)
-            if nargin <1
+            if nargin <3
                 playORstop = 'stop';
             end
             if isfield(obj.SoundStruct,soundname)
@@ -256,8 +256,10 @@ classdef PiSoundServer < SoundServ
             obj.SF = val;
         end
 
-        %function set.SF(obj, val)
-        %end
+        function setSF(obj, val)
+            obj.SF = val;
+        end
+        
         function OK = startServ(obj)
             if obj.synced
                 obj.socket.send('RUN');
@@ -375,11 +377,15 @@ classdef PiSoundServer < SoundServ
             if ~isnumeric(sndid)
                 id = find(strcmp(sndid, obj.sound_list));
             else
-                id = sndid;
+                id = sndid+1;
             end
             chgname = obj.sound_list{id};
             % modify local list
-            obj.SoundStruct.(chgname).(param_name) = param_value;
+            if strcmp(param_name,'wav')
+                obj.SoundStruct.(chgname).wave = param_value;
+            else
+                obj.SoundStruct.(chgname).(param_name) = param_value;
+            end
             % sync modify
             if isSync && obj.synced
                 obj.synced = 0;
@@ -389,7 +395,7 @@ classdef PiSoundServer < SoundServ
                     T = struct();
                     T.cmd = 'UPDATE';
                     T.name = chgname;
-                    if ~strcmp(param_name,'rep') && ~strcmp(param_name,'bal')
+                    if ~strcmp(param_name,'rep') && ~strcmp(param_name,'bal') && ~strcmp(param_name,'wav')
                         T.param = param_name;
                         T.val = param_value;
                     elseif strcmp(param_name,'rep')
@@ -400,6 +406,12 @@ classdef PiSoundServer < SoundServ
                         balvec = repmat([0.5+0.5*param_value;0.5-0.5*...
                             param_value],1,size(obj.SoundStruct.(chgname).wave,2));
                         T.val = obj.SoundStruct.(chgname).wave .* balvec;
+                    elseif strcmp(param_name,'wav')
+                        T.param = 'wav';
+                        if size(param_value,1)==1
+                            param_value = [param_value;param_value];
+                        end
+                        T.val = param_value;
                     end
                     obj.socket.send(jsonencode(T));
                     OK = waitForSTR(obj, 'str','UPDATED');
@@ -436,7 +448,12 @@ classdef PiSoundServer < SoundServ
         function stopall(obj)
         end
         
-        
+        function play_cell = PlaySound(obj,soundname,playORstop)
+            if nargin <3
+                playORstop = 'stop';
+            end
+            play_cell={obj.trigger(),obj.GetSoundid(soundname,playORstop)};
+        end
         
         function sound_names = list(obj)
             sound_names = obj.sound_list;
