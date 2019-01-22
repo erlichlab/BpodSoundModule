@@ -74,7 +74,7 @@ SF = 48000;
 % get connection to the sound service
 obj.Sounds = SoundServerLauncher() 
 % set sampling rate
-obj.Sounds.getSF(SF);
+obj.Sounds.setSF(SF);
 % set latency
 obj.Sounds.setLatency('high');
 % add sounds
@@ -194,6 +194,20 @@ then run the autoconfig script by
 
 ### Start the soundserv and try
 `sudo python3 RespberryPiAudioService.py`
+
+### Config auto-start service
+This step is optional. If you want to make Rpi sound python program running as a inner service (auto start as a system service, and auto re-start after some error), you can turn this on by running a .sh script.
+
+Before running this script, pls edit the .sh script named __autostart-config.sh__ , you need to make sure the path of __RespberryPiAudioService.py__ is right. Checking two lines marked by __#__.
+
+then, run this command below to start that service
+
+```
+sudo chmod +700 autostart-config.sh
+sudo ./autostart-config.sh
+```
+
+The Rpi will reboot  automatically after this command.
 
 ## Usage
 Download the folder `/SoundServ`from `/bpod/Bpod/Bpod System File/Plugins/PiSoundServer` from gitlab
